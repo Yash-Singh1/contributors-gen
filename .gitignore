@@ -1,0 +1,7 @@
+# Dependencies
+package-lock.json
+node_modules/
+
+# Editor Config
+.vscode/
+.idea/
