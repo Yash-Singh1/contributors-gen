@@ -26,18 +26,3 @@ contributorsGen({
   fileName /* string: The filename to write to, if writing enabled (default: 'CONTRIBUTORS') */
 });
 ```
-
-## CLI
-
-Install
-
-```sh
-npm install -g contributors-gen
-```
-
-Using:
-
-```sh
-# Read the man page
-man contributors-gen
-```

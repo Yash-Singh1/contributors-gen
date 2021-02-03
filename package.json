@@ -3,9 +3,6 @@
   "version": "1.0.0",
   "description": "Generate an CONTRIBUTORS file for GitHub",
   "main": "index.js",
-  "bin": {
-    "contributors-gen": "./cli.js"
-  },
   "keywords": [
     "contributors",
     "github",
@@ -14,9 +11,6 @@
   ],
   "author": "Yash Singh",
   "license": "MIT",
-  "dependencies": {
-    "meow": "^9.0.0"
-  },
   "man": [
     "contributors-gen.1"
   ]
