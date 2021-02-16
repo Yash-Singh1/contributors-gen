@@ -10,8 +10,5 @@
     "file"
   ],
   "author": "Yash Singh",
-  "license": "MIT",
-  "man": [
-    "contributors-gen.1"
-  ]
+  "license": "MIT"
 }
