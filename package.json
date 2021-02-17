@@ -10,5 +10,13 @@
     "file"
   ],
   "author": "Yash Singh",
-  "license": "MIT"
+  "license": "MIT",
+  "homepage": "https://github.com/Yash-Singh1/contributors-gen#readme",
+  "bugs": {
+    "url": "https://github.com/Yash-Singh1/contributors-gen/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Yash-Singh1/contributors-gen"
+  }
 }
