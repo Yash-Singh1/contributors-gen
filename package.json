@@ -1,6 +1,6 @@
 {
   "name": "contributors-gen",
-  "version": "1.1.2",
+  "version": "1.1.3",
   "description": "Generate an CONTRIBUTORS file for GitHub",
   "main": "index.js",
   "keywords": [
