@@ -6,6 +6,7 @@ const fs = require('fs');
 const { version } = require('./package.json');
 
 const childProcess = require('child_process');
+const { type } = require('os');
 
 function execute(command) {
   return new Promise(function (resolve, reject) {
@@ -30,6 +31,7 @@ function execute(command) {
  * @property {boolean} [usersOnly=true] Include users only inside the content (not bots, etc.)
  * @property {string|string[]} [comments=[]] The comments appended to the top of the file
  * @property {string} [fileName='CONTRIBUTORS'] The filename to write the content to
+ * @property {string|function} [sort='abc'] The sorting technique
  */
 
 /**
@@ -45,6 +47,7 @@ const run = async ({
   includeBots = false,
   comments = [],
   fileName = 'CONTRIBUTORS',
+  sort = 'abc'
 } = {}) => {
   if (typeof write != 'boolean') {
     write = false;
@@ -119,7 +122,25 @@ const run = async ({
       return true;
     }
   });
-  const finished = completeComments + contributors.sort().join('\n') + '\n';
+  if (typeof sort === 'string') {
+    switch (sort) {
+      case 'abc':
+        contributors = contributors.sort();
+        break;
+      case 'cba':
+        contributors = contributors.sort().reverse();
+        break;
+      case 'recent':
+        break;
+      case 'oldest':
+        contributors = contributors.reverse();
+      default:
+        throw new Error('Unknown sorting type: ' + sort);
+    }
+  } else if (typeof sort === 'function') {
+    contributors = contributors.sort(sort);
+  }
+  const finished = completeComments + contributors.join('\n') + '\n';
   if (write) {
     fs.writeFileSync(fileName, finished);
   }
