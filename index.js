@@ -6,7 +6,6 @@ const fs = require('fs');
 const { version } = require('./package.json');
 
 const childProcess = require('child_process');
-const { type } = require('os');
 
 function execute(command) {
   return new Promise(function (resolve, reject) {
