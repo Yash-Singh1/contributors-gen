@@ -71,6 +71,7 @@ const run = async ({
   let contributors = (await execute("git log --pretty=format:'%aN <%ae>'"))
     .split('\n')
     .map((line) => line.trim());
+  contributors = contributors.length === 1 && contributors[0] === '' ? [] : contributors;
   contributors = [...new Set(contributors)];
   contributors = includeBots
     ? contributors
