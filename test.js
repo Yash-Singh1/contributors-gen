@@ -359,7 +359,11 @@ test('fails on unknown sorting order', async (t) => {
   run({
     sort: 'random'
   }).catch((value) => {
-    t.is(value.message, 'Unknown sorting type: random');
+    t.is(
+      value.message,
+      'Unknown sorting type: random',
+      'thrown error matches on unknown sorting type'
+    );
   });
 });
 
@@ -381,7 +385,7 @@ test('sort order custom', async (t) => {
   run({
     sort: (a, b) => (a.startsWith('p') ? -1 : 1)
   }).then((value) => {
-    t.is(value[0], 'p');
+    t.is(value[0], 'p', 'the list begins with p');
   });
 });
 
@@ -394,7 +398,7 @@ test('rejects on cmd error', async (t) => {
     }
   });
   run().catch((value) => {
-    t.is(value, 'error');
+    t.is(value, 'error', 'error value rejected matches');
   });
 });
 
@@ -407,7 +411,7 @@ test('rejects on std error', async (t) => {
     }
   });
   run().catch((value) => {
-    t.is(value, 'stderr');
+    t.is(value, 'stderr', 'stderr value rejected matches');
   });
 });
 
