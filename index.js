@@ -77,19 +77,16 @@ const run = async ({
     ? contributors
     : contributors.filter((entry) => !entry.split(' <')[0].endsWith('[bot]'));
 
-  loginsOfContributors = contributors
-    .map((entry) => entry.split(' <')[0])
+  let loginsOfContributors = contributors
     .filter(
-      (login) =>
-        !login.includes(' ') &&
-        !contributors.find((value) => {
-          let mail = value.split(' <')[1].slice(0, -1);
-          return (
-            mail.endsWith('@users.noreply.github.com') &&
-            value.split(' <')[0] == login
-          );
-        })
-    );
+      (contributor) =>
+        contributor
+          .split(' <')[1]
+          .slice(0, -1)
+          .endsWith('@users.noreply.github.com') &&
+        !contributor.split(' <')[0].includes(' ')
+    )
+    .map((contributor) => contributor.split(' <')[0]);
   contributors = contributors.filter((value) => {
     let mail = value.split(' <')[1].slice(0, -1);
     let haveAlready;
