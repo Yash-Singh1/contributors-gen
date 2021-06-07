@@ -52,20 +52,21 @@ const run = async ({
   }
   let contributors = (
     await new Promise(function (resolve, reject) {
-      childProcess.exec(
-        "git log --pretty=format:'%aN <%ae>'",
-        function (error, standardOutput, standardError) {
-          if (error) {
-            reject(error);
-            return;
-          }
-          if (standardError) {
-            reject(standardError);
-            return;
-          }
-          resolve(standardOutput);
+      childProcess.exec("git log --pretty=format:'%aN <%ae>'", function (
+        error,
+        standardOutput,
+        standardError
+      ) {
+        if (error) {
+          reject(error);
+          return;
         }
-      );
+        if (standardError) {
+          reject(standardError);
+          return;
+        }
+        resolve(standardOutput);
+      });
     })
   )
     .split('\n')
@@ -80,7 +81,7 @@ const run = async ({
   let loginsOfContributors = contributors
     .filter(
       (contributor) =>
-        contributor
+        !contributor
           .split(' <')[1]
           .slice(0, -1)
           .endsWith('@users.noreply.github.com') &&
@@ -109,17 +110,9 @@ const run = async ({
       return true;
     }
   });
-  let allUsers = [];
-  contributors = contributors.filter((value) => {
-    let currentUser = value.split(' <')[0];
-    if (allUsers.includes(currentUser)) {
-      return false;
-    } else {
-      allUsers.push(currentUser);
-      return true;
-    }
-  });
-  if (typeof sort === 'string') {
+  if (typeof sort === 'function') {
+    contributors = contributors.sort(sort);
+  } else {
     switch (sort) {
       case 'abc':
         contributors = contributors.sort();
@@ -135,10 +128,11 @@ const run = async ({
       default:
         throw new Error('Unknown sorting type: ' + sort);
     }
-  } else if (typeof sort === 'function') {
-    contributors = contributors.sort(sort);
   }
-  const finished = completeComments + contributors.join('\n') + '\n';
+  const finished =
+    (contributors.length === 0 ? completeComments.trim() : completeComments) +
+    contributors.join('\n') +
+    '\n';
   if (write) {
     fs.writeFileSync(fileName, finished);
   }

@@ -4,6 +4,7 @@ node_modules/
 
 # Test generated files
 CONTRIBUTORS
+changename2
 .nyc_output/
 coverage/
 

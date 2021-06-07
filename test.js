@@ -198,6 +198,22 @@ test("changing filename doesn't write", async (t) => {
   });
 });
 
+test('changed filename is writable', async (t) => {
+  const run = requireInject('./index.js', {
+    child_process: {
+      exec(command, cb) {
+        return cb(undefined, '', undefined);
+      }
+    }
+  });
+  return run({
+    fileName: 'changename2',
+    write: true
+  }).then(() => {
+    t.true(fs.existsSync('changename2'), 'filename exists');
+  });
+});
+
 test('defaults for write, comments, and includeBots work', async (t) => {
   const n = Math.floor(Math.random() * 100) + 1;
   const nString = [...new Array(n).keys()]
@@ -415,8 +431,89 @@ test('rejects on std error', async (t) => {
   });
 });
 
+test('comments appear when there is no contributors', async (t) => {
+  const run = requireInject('./index.js', {
+    child_process: {
+      exec(command, cb) {
+        return cb(undefined, '', undefined);
+      }
+    }
+  });
+  run({
+    comments: ['comment1', 'comment2']
+  }).then((value) => {
+    t.deepEqual(value, '# comment1\n# comment2\n', '2 comments');
+  });
+});
+
+test('duplicate users appear', async (t) => {
+  const run = requireInject('./index.js', {
+    child_process: {
+      exec(command, cb) {
+        return cb(
+          undefined,
+          'person <person@example.com>\nperson <person@anything.com>',
+          undefined
+        );
+      }
+    }
+  });
+  run().then((value) => {
+    t.deepEqual(
+      value,
+      'person <person@anything.com>\nperson <person@example.com>\n',
+      'duplicates are removed from the input commits'
+    );
+  });
+});
+
+test("duplicate mails don't appear", async (t) => {
+  const run = requireInject('./index.js', {
+    child_process: {
+      exec(command, cb) {
+        return cb(
+          undefined,
+          'person <person@example.com>\nperson2 <person@example.com>',
+          undefined
+        );
+      }
+    }
+  });
+  run().then((value) => {
+    t.deepEqual(
+      value,
+      'person <person@example.com>\n',
+      'duplicate mails are removed from the input commits'
+    );
+  });
+});
+
+test("@users.noreply.github.com's are mapped to be removed", async (t) => {
+  const run = requireInject('./index.js', {
+    child_process: {
+      exec(command, cb) {
+        return cb(
+          undefined,
+          'person <person@example.com>\nPerson John <31301654+person@users.noreply.github.com>',
+          undefined
+        );
+      }
+    }
+  });
+  run().then((value) => {
+    t.deepEqual(
+      value,
+      'person <person@example.com>\n',
+      'duplicates are removed from the input commits'
+    );
+  });
+});
+
 test.afterEach(() => {
   if (fs.existsSync('CONTRIBUTORS')) {
     fs.unlinkSync('CONTRIBUTORS');
+  }
+  if (fs.existsSync('changename2')) {
+    fs.unlinkSync('changename2');
   }
 });
