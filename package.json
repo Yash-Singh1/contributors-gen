@@ -18,5 +18,12 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/Yash-Singh1/contributors-gen"
+  },
+  "devDependencies": {
+    "ava": "^3.15.0",
+    "require-inject": "^1.4.4"
+  },
+  "scripts": {
+    "test": "ava"
   }
 }

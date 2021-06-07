@@ -2,6 +2,9 @@
 package-lock.json
 node_modules/
 
+# Test generated files
+CONTRIBUTORS
+
 # Editor Config
 .vscode/
 .idea/
