@@ -4,24 +4,7 @@
 
 const fs = require('fs');
 const { version } = require('./package.json');
-
 const childProcess = require('child_process');
-
-function execute(command) {
-  return new Promise(function (resolve, reject) {
-    childProcess.exec(command, function (error, standardOutput, standardError) {
-      if (error) {
-        reject(error);
-        return;
-      }
-      if (standardError) {
-        reject(standardError);
-        return;
-      }
-      resolve(standardOutput);
-    });
-  });
-}
 
 /**
  * The configuration type
@@ -67,7 +50,24 @@ const run = async ({
       completeComments += '\n\n';
     }
   }
-  let contributors = (await execute("git log --pretty=format:'%aN <%ae>'"))
+  let contributors = (
+    await new Promise(function (resolve, reject) {
+      childProcess.exec(
+        "git log --pretty=format:'%aN <%ae>'",
+        function (error, standardOutput, standardError) {
+          if (error) {
+            reject(error);
+            return;
+          }
+          if (standardError) {
+            reject(standardError);
+            return;
+          }
+          resolve(standardOutput);
+        }
+      );
+    })
+  )
     .split('\n')
     .map((line) => line.trim());
   contributors =
