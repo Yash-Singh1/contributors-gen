@@ -198,12 +198,6 @@ test("changing filename doesn't write", async (t) => {
   });
 });
 
-test.afterEach(() => {
-  if (fs.existsSync('CONTRIBUTORS')) {
-    fs.unlinkSync('CONTRIBUTORS');
-  }
-});
-
 test('defaults for write, comments, and includeBots work', async (t) => {
   const n = Math.floor(Math.random() * 100) + 1;
   const nString = [...new Array(n).keys()]
@@ -415,4 +409,10 @@ test('rejects on std error', async (t) => {
   run().catch((value) => {
     t.is(value, 'stderr');
   });
+});
+
+test.afterEach(() => {
+  if (fs.existsSync('CONTRIBUTORS')) {
+    fs.unlinkSync('CONTRIBUTORS');
+  }
 });
