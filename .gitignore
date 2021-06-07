@@ -2,9 +2,7 @@
 package-lock.json
 node_modules/
 
-# Test generated files
-CONTRIBUTORS
-changename2
+# Code coverage
 .nyc_output/
 coverage/
 
