@@ -4,6 +4,8 @@ node_modules/
 
 # Test generated files
 CONTRIBUTORS
+.nyc_output/
+coverage/
 
 # Editor Config
 .vscode/
