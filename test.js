@@ -120,7 +120,6 @@ test('writes to CONTRIBUTORS by default', async (t) => {
       .slice(0, -1)
       .split('\n')
       .forEach((person) => {
-        console.log(person, nString);
         t.true(nString.split('\n').includes(person));
       });
   });
