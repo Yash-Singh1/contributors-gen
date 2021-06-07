@@ -370,9 +370,12 @@ test('fails on unknown sorting order', async (t) => {
 });
 
 test('sort order custom', async (t) => {
-  const abc = 'abcdefghijklmnopqrstuvwxyz'
+  const abc = 'abcdefghijklmnopqrstuvwxyz';
   const nString = [...new Array(100).keys()].map(
-    (v, i) => `${abc[i % abc.length]}erson${i} <${abc[i % abc.length]}erson${i}@anything.com>`
+    (v, i) =>
+      `${abc[i % abc.length]}erson${i} <${
+        abc[i % abc.length]
+      }erson${i}@anything.com>`
   );
   const run = requireInject('./index.js', {
     child_process: {
@@ -382,8 +385,34 @@ test('sort order custom', async (t) => {
     }
   });
   run({
-    sort: (a, b) => a.startsWith('p') ? -1 : 1
+    sort: (a, b) => (a.startsWith('p') ? -1 : 1)
   }).then((value) => {
     t.is(value[0], 'p');
+  });
+});
+
+test('rejects on cmd error', async (t) => {
+  const run = requireInject('./index.js', {
+    child_process: {
+      exec(command, cb) {
+        return cb('error', undefined, undefined);
+      }
+    }
+  });
+  run().catch((value) => {
+    t.is(value, 'error');
+  });
+});
+
+test('rejects on std error', async (t) => {
+  const run = requireInject('./index.js', {
+    child_process: {
+      exec(command, cb) {
+        return cb(undefined, undefined, 'stderr');
+      }
+    }
+  });
+  run().catch((value) => {
+    t.is(value, 'stderr');
   });
 });
