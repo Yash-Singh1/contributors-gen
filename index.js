@@ -131,6 +131,7 @@ const run = async ({
         break;
       case 'oldest':
         contributors = contributors.reverse();
+        break;
       default:
         throw new Error('Unknown sorting type: ' + sort);
     }
