@@ -59,8 +59,7 @@ const run = async ({
   } else if (!Array.isArray(comments)) {
     comments = [];
   }
-  completeComments =
-    comments != [] ? comments.map((comment) => `# ${comment}`).join('\n') : '';
+  completeComments = comments.map((comment) => `# ${comment}`).join('\n');
   if (completeComments != '') {
     if (comments.length == 1) {
       completeComments += '\n';
@@ -71,7 +70,8 @@ const run = async ({
   let contributors = (await execute("git log --pretty=format:'%aN <%ae>'"))
     .split('\n')
     .map((line) => line.trim());
-  contributors = contributors.length === 1 && contributors[0] === '' ? [] : contributors;
+  contributors =
+    contributors.length === 1 && contributors[0] === '' ? [] : contributors;
   contributors = [...new Set(contributors)];
   contributors = includeBots
     ? contributors
