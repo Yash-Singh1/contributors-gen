@@ -7,7 +7,7 @@
 Install:
 
 ```sh
-npm install --save contributors-gen
+npm install contributors-gen
 ```
 
 Importing:
