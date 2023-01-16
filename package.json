@@ -20,7 +20,7 @@
     "url": "https://github.com/Yash-Singh1/contributors-gen"
   },
   "devDependencies": {
-    "ava": "^4.0.0",
+    "ava": "^5.1.1",
     "nyc": "^15.1.0",
     "require-inject": "^1.4.4"
   },
